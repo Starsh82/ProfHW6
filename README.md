@@ -217,4 +217,87 @@ drwxr-xr-x 3 nobody nogroup 4096 июн 16 00:57 ../
 starsh@ubu22serv:/mnt$
 ```
 ---
-Проверяем сервер
+Проверяем сервер  
+- заходим на сервер в отдельном окне терминала;  
+- перезагружаем сервер;  
+- заходим на сервер;  
+- проверяем наличие файлов в каталоге /srv/share/upload/;  
+- проверяем экспорты exportfs -s;  
+- проверяем работу RPC showmount -a 192.168.50.10
+```
+root@UbuntuTestVirt:~# reboot
+
+Broadcast message from root@UbuntuTestVirt on pts/1 (Mon 2025-06-16 02:31:24 +04):
+
+The system will reboot now!
+
+root@UbuntuTestVirt:~#
+
+[SSH] INFO: DISCONNECT
+```
+```
+[SSH] Server Version OpenSSH_9.6p1 Ubuntu-3ubuntu13.12
+[SSH] Encryption used: chacha20-poly1305@openssh.com
+[SSH] Logged in (password)
+
+Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-60-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Вс 15 июн 2025 19:40:50 +04
+
+  System load:             0.25
+  Usage of /:              72.7% of 9.75GB
+  Memory usage:            24%
+  Swap usage:              0%
+  Processes:               263
+  Users logged in:         1
+  IPv4 address for enp0s3: 10.0.2.15
+  IPv6 address for enp0s3: fd00::a00:27ff:fe53:13dd
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Расширенное поддержание безопасности (ESM) для Applications выключено.
+
+0 обновлений может быть применено немедленно.
+
+Включите ESM Apps для получения дополнительных будущих обновлений безопасности.
+Смотрите https://ubuntu.com/esm или выполните: sudo pro status
+
+
+Last login: Sun Jun 15 21:26:12 2025 from 10.0.2.2
+starsh@UbuntuTestVirt:~$ sudo -i
+[sudo] password for starsh:
+```
+```
+root@UbuntuTestVirt:~# ll /srv/nfs/upload/
+total 8
+drwxrwxrwx 2 nobody nogroup 4096 июн 16 02:21 ./
+drwxr-xr-x 3 nobody nogroup 4096 июн 16 00:57 ../
+-rw-r--r-- 1 root   root       0 июн 16 02:20 check_file
+-rw-rw-r-- 1 starsh starsh     0 июн 16 02:21 client_file
+root@UbuntuTestVirt:~# exportfs -s
+/srv/nfs  *(sync,wdelay,hide,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+root@UbuntuTestVirt:~# showmount -a 192.168.0.160
+All mount points on 192.168.0.160:
+192.168.0.120:/srv/nfs
+```
+---
+Проверяем клиент:  
+- возвращаемся на клиент;
+- перезагружаем клиент;
+- заходим на клиент;
+- проверяем работу RPC showmount -a 192.168.50.10;
+- заходим в каталог /mnt/upload;
+- проверяем статус монтирования mount | grep mnt;
+- проверяем наличие ранее созданных файлов;
+- создаём тестовый файл touch final_check;
+- проверяем, что файл успешно создан.  
+```
+
+```

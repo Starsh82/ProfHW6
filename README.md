@@ -1,6 +1,6 @@
 # ProfHW6
-Домашнее задание №6. Работа с NFS.
-<b>Настраиваем сервер NFS</b>
+Домашнее задание №6. Работа с NFS.  
+<b>Настраиваем сервер NFS</b>  
 Устанавливаем NFS сервер
 ```
 root@UbuntuTestVirt:/srv# apt install nfs-kernel-server

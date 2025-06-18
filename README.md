@@ -158,11 +158,11 @@ drwxr-xr-x 3 nobody nogroup 4096 июн 16 00:57 ../
 -rw-rw-r-- 1 starsh starsh     0 июн 16 02:21 client_file
 ```
 ---
-Проверяем клиент касательно монтирования при запуске системы:  
+<b>Проверяем клиент касательно монтирования при запуске системы:  
 перезагружаем клиент;  
 заходим на клиент;  
 заходим в каталог /mnt/upload;  
-проверяем наличие ранее созданных файлов.  
+проверяем наличие ранее созданных файлов.</b>  
 ```
 starsh@ubu22serv:/mnt/upload$ sudo reboot
 
@@ -217,13 +217,13 @@ drwxr-xr-x 3 nobody nogroup 4096 июн 16 00:57 ../
 starsh@ubu22serv:/mnt$
 ```
 ---
-Проверяем сервер  
+<b>Проверяем сервер  
 - заходим на сервер в отдельном окне терминала;  
 - перезагружаем сервер;  
 - заходим на сервер;  
 - проверяем наличие файлов в каталоге /srv/share/upload/;  
 - проверяем экспорты exportfs -s;  
-- проверяем работу RPC showmount -a 192.168.50.10
+- проверяем работу RPC showmount -a 192.168.1.160</b>
 ```
 root@UbuntuTestVirt:~# reboot
 
@@ -288,7 +288,7 @@ All mount points on 192.168.0.160:
 192.168.0.120:/srv/nfs
 ```
 ---
-Проверяем клиент:  
+<b>Проверяем клиент:  
 - возвращаемся на клиент;
 - перезагружаем клиент;
 - заходим на клиент;
@@ -297,7 +297,75 @@ All mount points on 192.168.0.160:
 - проверяем статус монтирования mount | grep mnt;
 - проверяем наличие ранее созданных файлов;
 - создаём тестовый файл touch final_check;
-- проверяем, что файл успешно создан.  
+- проверяем, что файл успешно создан.</b>  
 ```
+starsh@ubu22serv:~$ sudo reboot
 
+Broadcast message from root@ubu22serv on pts/2 (Wed 2025-06-18 23:49:54 +04):
+
+The system will reboot now!
+
+starsh@ubu22serv:~$
+
+[SSH] INFO: DISCONNECT
+
+
+[SSH] Server Version OpenSSH_9.6p1 Ubuntu-3ubuntu13.12
+[SSH] Encryption used: chacha20-poly1305@openssh.com
+[SSH] Logged in (password)
+
+Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-60-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Ср 18 июн 2025 23:36:36 +04
+
+  System load:             0.1
+  Usage of /:              53.9% of 9.75GB
+  Memory usage:            23%
+  Swap usage:              0%
+  Processes:               109
+  Users logged in:         1
+  IPv4 address for enp0s3: 10.0.2.15
+  IPv6 address for enp0s3: fd00::a00:27ff:fe8e:5cb8
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Расширенное поддержание безопасности (ESM) для Applications выключено.
+
+0 обновлений может быть применено немедленно.
+
+Включите ESM Apps для получения дополнительных будущих обновлений безопасности.
+Смотрите https://ubuntu.com/esm или выполните: sudo pro status
+
+
+Last login: Wed Jun 18 23:36:38 2025 from 10.0.2.2
+```
+```
+starsh@ubu22serv:~$ showmount -a 192.168.0.160
+All mount points on 192.168.0.160:
+192.168.0.120:/srv/nfs
+starsh@ubu22serv:~$ cd /mnt/upload/
+starsh@ubu22serv:/mnt/upload$ mount | grep mnt
+systemd-1 on /mnt type autofs (rw,relatime,fd=65,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=4034)
+192.168.0.160:/srv/nfs/ on /mnt type nfs (rw,relatime,vers=3,rsize=262144,wsize=262144,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=192.168.0.160,mountvers=3,mountport=36039,mountproto=udp,local_lock=none,addr=192.168.0.160)
+starsh@ubu22serv:/mnt/upload$ ll
+total 8
+drwxrwxrwx 2 nobody nogroup 4096 июн 18 23:55 ./
+drwxr-xr-x 3 nobody nogroup 4096 июн 18 23:08 ../
+-rw-rw-r-- 1 starsh starsh     0 июн 18 23:11 client_file
+-rw-r--r-- 1 root   root       0 июн 18 23:10 server_file
+starsh@ubu22serv:/mnt/upload$ touch final_check
+starsh@ubu22serv:/mnt/upload$ ll
+total 8
+drwxrwxrwx 2 nobody nogroup 4096 июн 18 23:56 ./
+drwxr-xr-x 3 nobody nogroup 4096 июн 18 23:08 ../
+-rw-rw-r-- 1 starsh starsh     0 июн 18 23:11 client_file
+-rw-rw-r-- 1 starsh starsh     0 июн 18 23:56 final_check
+-rw-r--r-- 1 root   root       0 июн 18 23:10 server_file
 ```
